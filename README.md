@@ -16,11 +16,12 @@ const typeDefs = gql`
   directive @inherits(type: String!) on OBJECT
 
   type Car {
-    manufacturer: String = "Ford"
+    manufacturer: String
     color: String
   }
   
   type Tesla @inherits(type: "Car") {
+    manufacturer: String
     papa: String
     model: String
   }
@@ -32,27 +33,28 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-      tesla: () => ({ model: 'S' }),
+        tesla: () => ({ model: 'S' }),
     },
     Car: {
-      color: () => 'Orange',
+        manufacturer: () => 'Ford',
+        color: () => 'Orange',
     },
     Tesla: {
-      manufacturer: String = "Tesla, Inc"
-      papa: () => 'Elon',
+        manufacturer: () => 'Tesla, Inc',
+        papa: () => 'Elon',
     },
 };
 
 class InheritsDirective extends SchemaDirectiveVisitor {
-  visitObject(type) {
-    const fields = type.getFields();
-    const baseType = this.schema.getTypeMap()[this.args.type];
-    Object.entries(baseType.getFields()).forEach(([name, field]) => {
-        if (fields[name] === undefined) {
-            fields[name] = field;
-        }
-    });
-  }
+    visitObject(type) {
+        const fields = type.getFields();
+        const baseType = this.schema.getTypeMap()[this.args.type];
+        Object.entries(baseType.getFields()).forEach(([name, field]) => {
+            if (fields[name] === undefined) {
+                fields[name] = field;
+            }
+        });
+    }
 }
 
 const schemaDirectives = {
@@ -60,13 +62,13 @@ const schemaDirectives = {
 };
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  schemaDirectives,
+    typeDefs,
+    resolvers,
+    schemaDirectives,
 });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+server.listen(9449).then(({ url }) => {
+    console.log(`Server ready at ${url}`);
 });
 ```
 
