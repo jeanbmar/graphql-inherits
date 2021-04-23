@@ -102,4 +102,7 @@ Output:
 }
 ```
 
+# Limitations
+
+Overriding a resolver requires to declare the field in the derived (child) type.
 
