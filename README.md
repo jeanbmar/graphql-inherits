@@ -18,6 +18,7 @@ const typeDefs = gql`
   type Car {
     manufacturer: String
     color: String
+    type: String
   }
   
   type Tesla @inherits(type: "Car") {
@@ -33,7 +34,7 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        tesla: () => ({ model: 'S' }),
+        tesla: () => ({ model: 'S', type: 'electrical' }),
     },
     Car: {
         manufacturer: () => 'Ford',
@@ -79,6 +80,7 @@ Query:
 ```gql
 query {
   tesla {
+    type
     manufacturer
     papa
     color
@@ -93,6 +95,7 @@ Output:
 {
   "data": {
     "tesla": {
+      "type": "electrical",
       "manufacturer": "Tesla, Inc",
       "papa": "Elon",
       "color": "Orange",
