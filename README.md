@@ -52,7 +52,7 @@ class InheritsDirective extends SchemaDirectiveVisitor {
         const baseType = this.schema.getTypeMap()[this.args.type];
         Object.entries(baseType.getFields()).forEach(([name, field]) => {
             if (fields[name] === undefined) {
-                fields[name] = field;
+                fields[name] = { ...field };
             }
         });
     }
